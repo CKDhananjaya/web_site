@@ -1,0 +1,701 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Island Trails — Tour Packages</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  
+  <style>
+    /* ====================== */
+    /* CORE SETTINGS          */
+    /* ====================== */
+    :root {
+      --accent: #006d5b; /* Dark Green */
+      --bg: #f7faf9;
+      --gold: #ffc200;   /* Yellow */
+      --text-dark: #0f172a;
+      --gray: #64748b;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: var(--bg);
+      color: var(--text-dark);
+      overflow-x: hidden;
+    }
+
+    /* ====================== */
+    /* HEADER                 */
+    /* ====================== */
+    header {
+      width: 100%;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 1000;
+      background: #ffffff;
+      box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+      padding: 12px 0;
+      height: 80px;
+      display: flex;
+      align-items: center;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+    .nav-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+    }
+    .logo { display: flex; align-items:center; gap:12px; }
+    .logo-img { 
+        width: 50px; 
+        height: 50px; 
+        border-radius: 50%; 
+        object-fit: cover; 
+        border: 2px solid #eee;
+    }
+    .logo-text {
+      font-size: 26px; 
+      font-weight: 800; 
+      color: var(--accent);
+      letter-spacing: -0.5px;
+    }
+
+    /* NAVIGATION */
+    nav ul { display:flex; list-style:none; gap:30px; }
+    nav ul li a {
+      color: var(--accent);
+      text-decoration: none; 
+      font-weight: 600;
+      font-size: 16px; 
+      padding: 5px 0; 
+      position: relative; 
+      transition: 0.3s ease;
+    }
+    nav ul li a::after {
+      content: ""; 
+      display: block; 
+      width: 0; 
+      height: 3px; 
+      background: var(--gold);
+      transition: width 0.3s ease; 
+      position: absolute; 
+      bottom: -6px; 
+      left: 0;
+      border-radius: 2px;
+    }
+    nav ul li a:hover::after, 
+    nav ul li a.active::after { 
+        width: 100%; 
+    }
+    .cta {
+      padding: 12px 32px; 
+      background: var(--gold); 
+      color: #000; 
+      border-radius: 50px;
+      text-decoration: none; 
+      font-weight: 700; 
+      font-size: 15px; 
+      transition: 0.3s;
+    }
+    .cta:hover { 
+        background: #e6ac00; 
+        transform: translateY(-2px); 
+    }
+
+    /* ====================== */
+    /* PAGE BANNER (SLIDER)   */
+    /* ====================== */
+    .page-banner {
+      position: relative;
+      height: 50vh; 
+      min-height: 350px;
+      margin-top: 80px; 
+      width: 100%;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+    .slider-wrapper {
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      z-index: 0;
+    }
+    .slide {
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background-size: cover;
+      background-position: center;
+      opacity: 0;
+      transform: scale(1);
+      transition: opacity 1.5s ease-in-out;
+    }
+    .slide.active {
+      opacity: 1;
+      animation: kenBurns 8s infinite alternate;
+    }
+    @keyframes kenBurns {
+      0% { transform: scale(1); }
+      100% { transform: scale(1.15); }
+    }
+    .banner-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, rgba(0,0,0,0.3), rgba(0,0,0,0.7));
+      z-index: 1;
+    }
+    .banner-content {
+      position: relative;
+      z-index: 2;
+      color: white;
+      animation: fadeIn 1s ease;
+    }
+    .banner-title {
+      font-size: 48px;
+      font-weight: 800;
+      margin-bottom: 10px;
+    }
+    .banner-sub {
+      font-size: 18px;
+      opacity: 0.9;
+    }
+
+    /* ==================================== */
+    /* TOUR CARD STYLES (MODERN HORIZONTAL) */
+    /* ==================================== */
+    .tour-section {
+        padding: 60px 0;
+        text-align: center;
+    }
+    .tour-section h2 {
+        font-size: 36px;
+        font-weight: 800;
+        color: var(--accent);
+        margin-bottom: 40px;
+        text-align: left;
+    }
+    
+    .tour-cards {
+        display: flex;
+        flex-direction: column;
+        gap: 25px; 
+    }
+
+    /* Target: Card Wrapper - SETS FIXED HEIGHT */
+    .tour-card {
+        display: flex;
+        align-items: center;
+        background: #fff;
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        text-align: left;
+        
+        /* === KEY CHANGE: FIXED HEIGHT === */
+        height: 280px; 
+        /* ================================ */
+    }
+    .tour-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 45px rgba(0, 0, 0, 0.12);
+    }
+
+    /* Image Container */
+    .tour-image {
+        flex: 1;
+        min-width: 350px; 
+        /* === KEY CHANGE: 100% of card height === */
+        height: 100%; 
+        /* ====================================== */
+    }
+    .tour-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+    }
+    
+    /* Content Styling */
+    .tour-content {
+        flex: 2;
+        padding: 30px 40px; 
+        /* Allow content to scroll if it exceeds the fixed height (unlikely with this content) */
+        overflow: hidden; 
+    }
+    .tour-content .duration {
+        display: block;
+        font-size: 14px;
+        font-weight: 700;
+        color: var(--gold);
+        margin-bottom: 8px;
+        text-transform: uppercase;
+    }
+    .tour-content h3 {
+        font-size: 28px;
+        font-weight: 800; 
+        color: var(--accent); 
+        margin-bottom: 15px;
+    }
+    .tour-content p {
+        font-size: 16px;
+        color: var(--gray);
+        margin-bottom: 25px; 
+        line-height: 1.6;
+        /* Ensure all paragraphs take up the same vertical space */
+        height: 50px; 
+        overflow: hidden; 
+    }
+    
+    /* Button Styling */
+    .tour-content a {
+        display: inline-block;
+        padding: 12px 30px;
+        background: var(--gold); 
+        color: var(--text-dark); 
+        border: none;
+        border-radius: 50px;
+        text-decoration: none;
+        font-size: 15px;
+        font-weight: 700;
+        transition: transform 0.3s, opacity 0.3s;
+    }
+    .tour-content a:hover {
+        transform: translateY(-1px);
+        opacity: 0.9;
+    }
+
+
+    /* ====================== */
+    /* SHARE STORY SECTION    */
+    /* ====================== */
+    .share-story {
+      padding: 100px 20px;
+      background: #f0f9ff;
+    }
+    .share-container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .share-header {
+      text-align: center;
+      margin-bottom: 60px;
+    }
+    .share-header h2 {
+      font-size: 42px;
+      color: #0b7a6f;
+      margin-bottom: 20px;
+      font-weight: 800;
+    }
+    .share-header p {
+      font-size: 20px;
+      color: #555;
+    }
+    .share-banner {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 32px;
+      background: #fff;
+      border-radius: 20px;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+      padding: 32px;
+    }
+    .share-banner img {
+      flex: 1 1 300px;
+      border-radius: 16px;
+      max-width: 100%;
+      height: 250px;
+      object-fit: cover;
+    }
+    .share-cta {
+      flex: 2 1 500px;
+    }
+    .share-cta h3 {
+      font-size: 28px;
+      color: #0b7a6f;
+      margin-bottom: 16px;
+      font-weight: 700;
+    }
+    .share-cta p {
+      font-size: 18px;
+      color: #555;
+      margin-bottom: 20px;
+    }
+    .review-btn {
+      display: inline-block;
+      padding: 14px 32px;
+      border-radius: 28px;
+      background: gold;
+      color: #000;
+      font-weight: 700;
+      text-decoration: none;
+      transition: transform 0.2s, background 0.2s;
+    }
+    .review-btn:hover {
+      transform: scale(1.05);
+      background: #ffc200;
+    }
+
+
+    /* ====================== */
+    /* FOOTER                 */
+    /* ====================== */
+    .site-footer {
+      background: #0b7a6f;
+      color: #fff;
+      padding: 60px 20px 30px;
+    }
+    .footer-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 40px;
+      justify-content: space-between;
+    }
+    .footer-about .footer-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 800;
+      font-size: 28px;
+      margin-bottom: 12px;
+    }
+    .footer-about p {
+      max-width: 300px;
+      font-size: 16px;
+      line-height: 1.6;
+      color: #e0e0e0;
+    }
+    .footer-links h4 {
+      font-size: 20px;
+      margin-bottom: 12px;
+      font-weight: 700;
+    }
+    .footer-links ul {
+      list-style: none;
+      padding: 0;
+    }
+    .footer-links ul li {
+      margin-bottom: 8px;
+    }
+    .footer-links ul li a {
+      text-decoration: none;
+      color: #fff;
+      transition: color 0.2s;
+    }
+    .footer-links ul li a:hover {
+      color: #ffc200;
+    }
+    .footer-contact h4 {
+      font-size: 20px;
+      margin-bottom: 12px;
+      font-weight: 700;
+    }
+    .footer-contact p {
+      font-size: 16px;
+      margin-bottom: 8px;
+    }
+    .social-icons {
+      display: flex;
+      gap: 12px;
+      margin-top: 8px;
+    }
+    .social-icons a img {
+      width: 28px;
+      height: 28px;
+      transition: transform 0.2s;
+    }
+    .social-icons a img:hover {
+      transform: scale(1.1);
+    }
+    .footer-bottom {
+      margin-top: 40px;
+      text-align: center;
+      font-size: 14px;
+      color: #e0e0e0;
+    }
+
+
+    /* ====================== */
+    /* RESPONSIVE MEDIA QUERIES */
+    /* ====================== */
+    @media(max-width: 900px) {
+      .banner-title { font-size: 36px; }
+      nav nav { display: none; } 
+      .logo-text { font-size: 20px; }
+
+      /* ALL Tour Card Mobile Fix */
+      .tour-card {
+        flex-direction: column;
+        min-height: auto;
+        height: auto; /* Remove fixed height on mobile */
+      }
+      .tour-image {
+        min-width: 100%;
+        height: 200px;
+      }
+      .tour-content {
+        padding: 25px 20px;
+      }
+      .tour-content h3 {
+        font-size: 24px;
+      }
+      .tour-content p {
+          height: auto; /* Remove fixed height on mobile */
+      }
+
+      .share-banner {
+        flex-direction: column;
+      }
+      .share-banner img {
+        height: 220px;
+      }
+      .footer-container {
+        flex-direction: column;
+        gap: 30px;
+        text-align: center;
+      }
+      .footer-about p {
+        margin: 0 auto;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="container nav-container">
+    <div class="logo">
+      <img src="img/logo.png" class="logo-img" alt="Logo">
+      <div class="logo-text">Island Trails</div>
+    </div>
+    <nav>
+      <ul>
+        <li><a href="Home.html">Home</a></li>
+        <li><a href="Destinations.html">Destinations</a></li>
+        
+        <li><a href="Tours.html" class="active">Tour Packages</a></li>
+        
+        <li><a href="CustomTours.html">Custom Tours</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </nav>
+    <a class="cta" href="contact.html">Book Now</a>
+  </div>
+</header>
+
+<section class="page-banner">
+  
+  <div class="slider-wrapper">
+    <div class="slide active" style="background-image: url('img/slider1.jpg');"></div>
+    <div class="slide" style="background-image: url('img/slider2.jpg');"></div>
+    <div class="slide" style="background-image: url('img/slider3.jpg');"></div>
+  </div>
+
+  <div class="banner-overlay"></div>
+  <div class="banner-content">
+    <h1 class="banner-title">Our Flexible Tour Packages</h1>
+    <p class="banner-sub">Pre-set itineraries for an unforgettable Sri Lankan journey.</p>
+  </div>
+</section>
+
+<main class="container tour-section">
+  <h2>All Available Tour Packages</h2>
+  <div class="tour-cards">
+    
+    <div class="tour-card">
+      <div class="tour-image">
+        <img src="img/Roundtours-1.jpg" alt="Treasures of the Island">
+      </div>
+      <div class="tour-content">
+        <span class="duration">4 Days / 3 Nights</span>
+        <h3>Treasures of the Island</h3>
+        <p>A quick escape covering the Cultural Triangle and the beautiful beaches of the South Coast (Sigiriya, Galle, Mirissa, Bentota, Kandy).</p>
+        <a href="#">View Deal</a>
+      </div>
+    </div>
+
+    <div class="tour-card">
+        <div class="tour-image">
+            <img src="img/Round-tours2.jpg" alt="Wild Ceylon Experience">
+        </div>
+        <div class="tour-content">
+            <span class="duration">5 Days / 4 Nights</span>
+            <h3>Wild Ceylon Experience</h3>
+            <p>Focuses on wildlife and scenic highlands, including safari adventures and train journeys through tea estates (Galle, Yala, Mirissa, Ella, Nuwara Eliya).</p>
+            <a href="#">View Deal</a>
+        </div>
+    </div>
+
+    <div class="tour-card">
+        <div class="tour-image">
+            <img src="img/Ella.jpg" alt="Majestic Sri Lankan Tour">
+        </div>
+        <div class="tour-content">
+            <span class="duration">6 Days / 5 Nights</span>
+            <h3>Majestic Sri Lankan Tour</h3>
+            <p>A balanced mix of beach, culture, and nature, hitting key spots in the South and Central regions (Galle, Yala, Ella, Kandy, Sigiriya).</p>
+            <a href="#">View Deal</a>
+        </div>
+    </div>
+
+    <div class="tour-card">
+        <div class="tour-image">
+            <img src="img/beach1.jpg" alt="Sri Lanka Panorama Escape">
+        </div>
+        <div class="tour-content">
+            <span class="duration">7 Days / 6 Nights</span>
+            <h3>Sri Lanka Panorama Escape</h3>
+            <p>A panoramic journey through highlands, ancient sites, and coastal towns (Sigiriya, Kandy, Nuwara Eliya, Ella, Mirissa, Bentota).</p>
+            <a href="#">View Deal</a>
+        </div>
+    </div>
+
+    <div class="tour-card">
+        <div class="tour-image">
+            <img src="img/Island-Essence.jpg" alt="Island Essence Journey">
+        </div>
+        <div class="tour-content">
+            <span class="duration">8 Days / 7 Nights</span>
+            <h3>Island Essence Journey</h3>
+            <p>Capturing the 'essence' of the island, focusing on the scenic central hills and beautiful southern beaches (Kandy, Ella, Udawalawe, Unawatuna).</p>
+            <a href="#">View Deal</a>
+        </div>
+    </div>
+
+    <div class="tour-card">
+        <div class="tour-image">
+            <img src="img/Ceylon-Circuit.jpg" alt="The Ceylon Circuit">
+        </div>
+        <div class="tour-content">
+            <span class="duration">9 Days / 8 Nights</span>
+            <h3>The Ceylon Circuit</h3>
+            <p>A comprehensive circular route exploring the hill country, historic Kandy, and the coastal fortress of Galle (Galle, Ella, Nuwara Eliya, Kandy, Sigiriya).</p>
+            <a href="#">View Deal</a>
+        </div>
+    </div>
+
+    <div class="tour-card">
+        <div class="tour-image">
+            <img src="img/Scenic-Ceylon.jpg" alt="Scenic Ceylon Journey">
+        </div>
+        <div class="tour-content">
+            <span class="duration">10 Days / 9 Nights</span>
+            <h3>Scenic Ceylon Journey</h3>
+            <p>A perfect ten-day itinerary showcasing the country's most scenic train routes, wildlife parks, and cultural heritage (Galle, Tissamaharama, Ella, Nuwara Eliya, Kandy, Sigiriya).</p>
+            <a href="#">View Deal</a>
+        </div>
+    </div>
+
+    <div class="tour-card">
+        <div class="tour-image">
+            <img src="img/history.jpg" alt="Sri Lanka Signature Tour">
+        </div>
+        <div class="tour-content">
+            <span class="duration">12 Days / 11 Nights</span>
+            <h3>Sri Lanka Signature Tour</h3>
+            <p>The ultimate journey covering the island's best: ancient kingdoms, tea country vistas, wildlife safaris, and relaxing south coast beaches.</p>
+            <a href="#" class="feature-btn">View Deal</a>
+        </div>
+    </div>
+
+    <div class="tour-card">
+        <div class="tour-image">
+            <img src="img/anura.jpg" alt="Kingdoms to Coastline">
+        </div>
+        <div class="tour-content">
+            <span class="duration">14 Days / 13 Nights</span>
+            <h3>Kingdoms to Coastline</h3>
+            <p>The most extensive tour, visiting the ancient kingdoms of Anuradhapura and Polonnaruwa, plus the East Coast (Trincomalee) and the entire Southern Circuit.</p>
+            <a href="#">View Deal</a>
+        </div>
+    </div>
+
+  </div>
+</main>
+
+<section class="share-story" id="share-story">
+  <div class="container share-container">
+    <div class="share-header">
+      <h2>Share Your Story, Inspire Future Journeys</h2>
+      <p>Your stories guide fellow travelers – share your Sri Lankan adventure and inspire the next journey.</p>
+    </div>
+
+    <div class="share-banner">
+      <img src="img/tripadvisor-banner.jpg" alt="TripAdvisor Banner">
+      <div class="share-cta">
+        <h3>Write a Review</h3>
+        <p>Your review isn’t just feedback – it’s a guide for future travelers.</p>
+        <a href="#contact" class="review-btn">Write a Review</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="container footer-container">
+    <div class="footer-about">
+      <div class="footer-logo">
+        <img src="img/logo.png" alt="Island Trails Logo" style="width:50px; height:50px; border-radius:12px; object-fit:cover;">
+        <span>Island Trails</span>
+      </div>
+      <p>Explore Sri Lanka’s iconic treasures and hidden gems with custom tours, guided trips, and unforgettable experiences.</p>
+    </div>
+
+    <div class="footer-links">
+      <h4>Quick Links</h4>
+      <ul>
+        <li><a href="Home.html">Home</a></li>
+        <li><a href="Destinations.html">Destinations</a></li>
+        <li><a href="Tours.html">Tour Packages</a></li>
+        <li><a href="CustomTours.html">Custom Tours</a></li>
+        <li><a href="Contact.html">Contact</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-contact">
+      <h4>Contact Us</h4>
+      <p>Email: info@islandtrails.com</p>
+      <p>Phone: +94 77 123 4567</p>
+      <div class="social-icons">
+        <a href="#"><img src="img/facebook.png" alt="Facebook"></a>
+        <a href="#"><img src="img/instagram.png" alt="Instagram"></a>
+        <a href="#"><img src="img/twitter.png" alt="Twitter"></a>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <p>&copy; 2025 Island Trails. All rights reserved.</p>
+  </div>
+</footer>
+
+<script>
+  // Script for the banner slider remains the same
+  const slides = document.querySelectorAll('.slide');
+  let currentSlide = 0;
+
+  function nextSlide() {
+    slides[currentSlide].classList.remove('active');
+    currentSlide = (currentSlide + 1) % slides.length;
+    slides[currentSlide].classList.add('active');
+  }
+
+  // Change slide every 5 seconds (5000 milliseconds)
+  setInterval(nextSlide, 5000);
+</script>
+
+</body>
+</html>

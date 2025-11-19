@@ -1,0 +1,1039 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Island Trails — Destinations</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  
+  <style>
+    /* ====================== */
+    /* CORE SETTINGS          */
+    /* ====================== */
+    :root {
+      --accent: #006d5b; /* Dark Green */
+      --bg: #f7faf9;
+      --gold: #ffc200;   /* Yellow */
+      --text-dark: #0f172a;
+      --gray: #64748b;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: var(--bg);
+      color: var(--text-dark);
+      overflow-x: hidden;
+    }
+
+    /* ====================== */
+    /* HEADER (UNCHANGED)     */
+    /* ====================== */
+    header {
+      width: 100%;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 1000;
+      background: #ffffff;
+      box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+      padding: 12px 0;
+      height: 80px;
+      display: flex;
+      align-items: center;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+    .nav-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+    }
+    
+    /* LOGO */
+    .logo { display: flex; align-items:center; gap:12px; }
+    .logo-img { 
+        width: 50px; 
+        height: 50px; 
+        border-radius: 50%; 
+        object-fit: cover; 
+        border: 2px solid #eee;
+    }
+    .logo-text {
+      font-size: 26px; 
+      font-weight: 800; 
+      color: var(--accent);
+      letter-spacing: -0.5px;
+    }
+
+    /* NAVIGATION */
+    nav ul { display:flex; list-style:none; gap:30px; }
+    nav ul li a {
+      color: var(--accent);
+      text-decoration: none; 
+      font-weight: 600;
+      font-size: 16px; 
+      padding: 5px 0; 
+      position: relative; 
+      transition: 0.3s ease;
+    }
+    
+    /* Active/Hover Line */
+    nav ul li a::after {
+      content: ""; 
+      display: block; 
+      width: 0; 
+      height: 3px; 
+      background: var(--gold);
+      transition: width 0.3s ease; 
+      position: absolute; 
+      bottom: -6px; 
+      left: 0;
+      border-radius: 2px;
+    }
+    nav ul li a:hover::after, 
+    nav ul li a.active::after { 
+        width: 100%; 
+    }
+
+    /* BUTTON */
+    .cta {
+      padding: 12px 32px; 
+      background: var(--gold); 
+      color: #000; 
+      border-radius: 50px;
+      text-decoration: none; 
+      font-weight: 700; 
+      font-size: 15px; 
+      transition: 0.3s;
+    }
+    .cta:hover { 
+        background: #e6ac00; 
+        transform: translateY(-2px); 
+    }
+
+    /* ====================== */
+    /* PAGE BANNER (SLIDER)   */
+    /* ====================== */
+    .page-banner {
+      position: relative;
+      height: 50vh; /* Shorter height for subpage banner */
+      min-height: 350px;
+      margin-top: 80px; 
+      width: 100%;
+      overflow: hidden; /* Crucial for slider */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+    
+    /* The Slider Container */
+    .slider-wrapper {
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      z-index: 0;
+    }
+
+    /* Individual Slides */
+    .slide {
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background-size: cover;
+      background-position: center;
+      opacity: 0;
+      transform: scale(1);
+      transition: opacity 1.5s ease-in-out;
+    }
+
+    /* The Active Slide Logic */
+    .slide.active {
+      opacity: 1;
+      animation: kenBurns 8s infinite alternate; /* The Slow Zoom Effect */
+    }
+
+    @keyframes kenBurns {
+      0% { transform: scale(1); }
+      100% { transform: scale(1.15); }
+    }
+
+    .banner-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, rgba(0,0,0,0.3), rgba(0,0,0,0.7));
+      z-index: 1; /* Overlay above slides */
+    }
+
+    .banner-content {
+      position: relative;
+      z-index: 2; /* Content above overlay */
+      color: white;
+      animation: fadeIn 1s ease;
+    }
+    .banner-title {
+      font-size: 48px;
+      font-weight: 800;
+      margin-bottom: 10px;
+    }
+    .banner-sub {
+      font-size: 18px;
+      opacity: 0.9;
+    }
+
+    /* ====================== */
+    /* DESTINATION GRID       */
+    /* ====================== */
+    .destinations-section {
+      padding: 60px 0;
+    }
+    .dest-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+      margin-top: 30px;
+    }
+    .dest-card {
+      background: #fff;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      text-decoration: none;
+      color: inherit;
+      display: block;
+    }
+    .dest-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 12px 30px rgba(0,109,91,0.15);
+    }
+    .dest-img {
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+      background-color: #eee;
+    }
+    .dest-body {
+      padding: 24px;
+    }
+    .dest-title {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 8px;
+    }
+    .dest-desc {
+      font-size: 14px;
+      color: var(--gray);
+      line-height: 1.6;
+      margin-bottom: 16px;
+    }
+    .dest-link {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--gold);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Responsive */
+    @media(max-width: 900px) {
+      .banner-title { font-size: 36px; }
+      nav nav { display: none; } 
+      .logo-text { font-size: 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="container nav-container">
+    <div class="logo">
+      <img src="img/logo.png" class="logo-img" alt="Logo">
+      <div class="logo-text">Island Trails</div>
+    </div>
+    <nav>
+      <ul>
+        <li><a href="Home.html">Home</a></li>
+        
+        <li><a href="Destinations.html" class="active">Destinations</a></li>
+        
+        <li><a href="Tours.html">Tour Packages</a></li>
+        <li><a href="CustomTours.html">Custom Tours</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </nav>
+    <a class="cta" href="contact.html">Book Now</a>
+  </div>
+</header>
+
+<section class="page-banner">
+  
+  <div class="slider-wrapper">
+    <div class="slide active" style="background-image: url('img/slider1.jpg');"></div>
+    <div class="slide" style="background-image: url('img/slider2.jpg');"></div>
+    <div class="slide" style="background-image: url('img/slider3.jpg');"></div>
+  </div>
+
+  <div class="banner-overlay"></div>
+  <div class="banner-content">
+    <h1 class="banner-title">Explore Destinations</h1>
+    <p class="banner-sub">Discover the magic of Sri Lanka's most iconic spots.</p>
+  </div>
+</section>
+
+<main class="container destinations-section">
+  
+  <div class="dest-grid">
+    
+    <a href="#" class="dest-card">
+      <img src="img/sigiriya.jpg" class="dest-img" alt="Sigiriya">
+      <div class="dest-body">
+        <h3 class="dest-title">Sigiriya</h3>
+        <p class="dest-desc">The ancient rock fortress dominated by a massive column of rock nearly 200 meters high.</p>
+        <span class="dest-link">View Details &rarr;</span>
+      </div>
+    </a>
+
+    <a href="#" class="dest-card">
+      <img src="img/ella.jpg" class="dest-img" alt="Ella">
+      <div class="dest-body">
+        <h3 class="dest-title">Ella</h3>
+        <p class="dest-desc">A small town in the Badulla District known for its stunning mountain views and the Nine Arch Bridge.</p>
+        <span class="dest-link">View Details &rarr;</span>
+      </div>
+    </a>
+
+    <a href="#" class="dest-card">
+      <img src="img/galle.jpg" class="dest-img" alt="Galle">
+      <div class="dest-body">
+        <h3 class="dest-title">Galle Fort</h3>
+        <p class="dest-desc">A historic city on the southwest coast, famous for its Dutch colonial buildings and lighthouse.</p>
+        <span class="dest-link">View Details &rarr;</span>
+      </div>
+    </a>
+
+    <a href="#" class="dest-card">
+      <img src="img/kandy.jpg" class="dest-img" alt="Kandy">
+      <div class="dest-body">
+        <h3 class="dest-title">Kandy</h3>
+        <p class="dest-desc">The cultural capital, home to the Temple of the Tooth Relic and beautiful botanical gardens.</p>
+        <span class="dest-link">View Details &rarr;</span>
+      </div>
+    </a>
+
+    <a href="#" class="dest-card">
+      <img src="img/nuwara-eliya.jpg" class="dest-img" alt="Nuwara Eliya">
+      <div class="dest-body">
+        <h3 class="dest-title">Nuwara Eliya</h3>
+        <p class="dest-desc">Known as "Little England," famous for its cool climate, colonial bungalows, and tea plantations.</p>
+        <span class="dest-link">View Details &rarr;</span>
+      </div>
+    </a>
+
+    <a href="#" class="dest-card">
+      <img src="img/mirissa.jpg" class="dest-img" alt="Mirissa">
+      <div class="dest-body">
+        <h3 class="dest-title">Mirissa</h3>
+        <p class="dest-desc">A tropical paradise famous for whale watching, surfing, and vibrant nightlife.</p>
+        <span class="dest-link">View Details &rarr;</span>
+      </div>
+    </a>
+
+  </div>
+</main>
+
+<script>
+  // Add this script tag at the bottom of the body to enable the automatic slider transition
+  const slides = document.querySelectorAll('.slide');
+  let currentSlide = 0;
+
+  function nextSlide() {
+    // Remove active class from current slide
+    slides[currentSlide].classList.remove('active');
+    
+    // Calculate next slide index
+    currentSlide = (currentSlide + 1) % slides.length;
+    
+    // Add active class to next slide
+    slides[currentSlide].classList.add('active');
+  }
+
+  // Change slide every 5 seconds (5000 milliseconds)
+  setInterval(nextSlide, 5000);
+</script>
+
+
+
+
+
+
+
+<!-- Part 2 Start -->
+
+<!-- Part 2: Explore Sri Lanka Cards -->
+<section class="explore-section">
+  <div class="container">
+    <h2 class="section-title">Explore Sri Lanka</h2>
+    <p class="section-subtitle">Discover beaches, cultural heritage, adventure, wildlife, and more!</p>
+
+    <div class="cards-grid">
+      <!-- Example Card -->
+      <div class="card">
+        <img src="img/mirissa.jpg" alt="Mirissa Beach" class="card-img">
+        <div class="card-content">
+          <h3>Mirissa</h3>
+          <p>A relaxed coastal town known for whale watching, surfing, and stunning sunsets.</p>
+          <ul>
+            <li>Whale and Dolphin watching</li>
+            <li>Coconut Tree Hill Viewpoint</li>
+            <li>Secret Beach and quiet coves</li>
+            <li>Best time: April</li>
+            <li>Travel time: 2–3 hours from Colombo</li>
+          </ul>
+          <p>Nearby Attractions: Galle Fort, Weligama Bay</p>
+          <a href="https://wa.me/94760578645" target="_blank" class="btn-whatsapp"><center>Inquire Now</center></a>
+        </div>
+      </div>
+
+      <div class="card">
+        <img src="img/weligama.jpg" alt="Weligama Beach" class="card-img">
+        <div class="card-content">
+          <h3>Weligama</h3>
+          <p>A lively beach town with calm waves, perfect for learning to surf. Famous for stilt fishermen.</p>
+          <ul>
+            <li>Iconic stilt fishermen</li>
+            <li>Fresh seafood and local markets</li>
+            <li>Beginner-friendly surf spots</li>
+            <li>Best time: November to April</li>
+            <li>Travel time: 2.5 hours from Colombo</li>
+          </ul>
+          <p>Nearby Attractions: Mirissa Beach, Galle Fort, Taprobane Island</p>
+          <a href="https://wa.me/94760578645" target="_blank" class="btn-whatsapp"><center>Inquire Now</center></a>
+        </div>
+      </div>
+
+      <div class="card">
+        <img src="img/bentota.jpg" alt="Bentota Beach" class="card-img">
+        <div class="card-content">
+          <h3>Bentota</h3>
+          <p>A popular beach town where the river meets the sea, known for golden beaches, water sports, and Ayurvedic spas.</p>
+          <ul>
+            <li>Peaceful river safaris through mangroves</li>
+            <li>Water sports like jet skiing, banana boat rides</li>
+            <li>Wide sandy beaches for sunbathing</li>
+            <li>Best time: November to April</li>
+            <li>Travel time: 2 hours from Colombo</li>
+          </ul>
+          <p>Nearby Attractions: Lunuganga Estate, Brief Garden by Bevis Bawa</p>
+          <a href="https://wa.me/94760578645" target="_blank" class="btn-whatsapp"><center>Inquire Now</center></a>
+        </div>
+      </div>
+
+      <!-- Add more cards here following the same structure for Negombo, Arugam Bay, Trincomalee, Sigiriya, Dambulla, etc. -->
+    </div>
+  </div>
+</section>
+
+<!-- Part 2: Explore Sri Lanka Cards -->
+<section class="explore-section">
+  <div class="container">
+    <h2 class="section-title">Explore Sri Lanka</h2>
+    <p class="section-subtitle">Discover beaches, cultural heritage, adventure, wildlife, and more!</p>
+
+    <div class="cards-grid">
+      <!-- Mirissa -->
+      <div class="card">
+        <img src="img/mirissa.jpg" alt="Mirissa Beach" class="card-img">
+        <div class="card-content">
+          <h3>Mirissa</h3>
+          <p>A relaxed coastal town known for whale watching, surfing, and stunning sunsets.</p>
+          <ul>
+            <li>Whale and Dolphin watching</li>
+            <li>Coconut Tree Hill Viewpoint</li>
+            <li>Secret Beach and quiet coves</li>
+            <li>Best time: April</li>
+            <li>Travel time: 2–3 hours from Colombo</li>
+          </ul>
+          <p>Nearby Attractions: Galle Fort, Weligama Bay</p>
+          <a href="https://wa.me/94760578645" target="_blank" class="btn-whatsapp"><center>Inquire Now</center></a>
+        </div>
+      </div>
+
+      <!-- Weligama -->
+      <div class="card">
+        <img src="img/weligama.jpg" alt="Weligama Beach" class="card-img">
+        <div class="card-content">
+          <h3>Weligama</h3>
+          <p>A lively beach town with calm waves, perfect for learning to surf. Famous for stilt fishermen.</p>
+          <ul>
+            <li>Iconic stilt fishermen</li>
+            <li>Fresh seafood and local markets</li>
+            <li>Beginner-friendly surf spots</li>
+            <li>Best time: November to April</li>
+            <li>Travel time: 2.5 hours from Colombo</li>
+          </ul>
+          <p>Nearby Attractions: Mirissa Beach, Galle Fort, Taprobane Island</p>
+          <a href="https://wa.me/94760578645" target="_blank" class="btn-whatsapp"><center>Inquire Now</center></a>
+        </div>
+      </div>
+
+      <!-- Bentota -->
+      <div class="card">
+        <img src="img/bentota.jpg" alt="Bentota Beach" class="card-img">
+        <div class="card-content">
+          <h3>Bentota</h3>
+          <p>A popular beach town where the river meets the sea, known for golden beaches, water sports, and Ayurvedic spas.</p>
+          <ul>
+            <li>Peaceful river safaris through mangroves</li>
+            <li>Water sports like jet skiing, banana boat rides</li>
+            <li>Wide sandy beaches for sunbathing</li>
+            <li>Best time: November to April</li>
+            <li>Travel time: 2 hours from Colombo</li>
+          </ul>
+          <p>Nearby Attractions: Lunuganga Estate, Brief Garden by Bevis Bawa</p>
+          <a href="https://wa.me/94760578645" target="_blank" class="btn-whatsapp"><center>Inquire Now</center></a>
+        </div>
+      </div>
+
+      <!-- Negombo -->
+      <div class="card">
+        <img src="img/negombo.jpg" alt="Negombo Beach" class="card-img">
+        <div class="card-content">
+          <h3>Negombo</h3>
+          <p>Negombo is a lively coastal city with golden beaches, Dutch colonial architecture, and a busy fishing harbor.</p>
+          <ul>
+            <li>Dutch Canal & colonial buildings</li>
+            <li>Historic churches & temples</li>
+            <li>Fresh seafood markets</li>
+            <li>Best time: December to April</li>
+            <li>Travel time: 30 minutes from Colombo</li>
+          </ul>
+          <p>Nearby Attractions: Muthurajawela Marsh, Colombo City</p>
+          <a href="https://wa.me/94760578645" target="_blank" class="btn-whatsapp"><center>Inquire Now</center></a>
+        </div>
+      </div>
+
+      <!-- Arugam Bay -->
+      <div class="card">
+        <img src="img/arugambay.jpg" alt="Arugam Bay" class="card-img">
+        <div class="card-content">
+          <h3>Arugam Bay</h3>
+          <p>Renowned surf destination with golden beaches and a laid-back vibe. Perfect for surfing and wildlife spotting.</p>
+          <ul>
+            <li>World-class surfing</li>
+            <li>Lagoon safaris</li>
+            <li>Beachside nightlife</li>
+            <li>Best time: May to September</li>
+            <li>Travel time: 7-8 hours from Colombo</li>
+          </ul>
+          <p>Nearby Attractions: Kumana National Park, Pottuvil Lagoon</p>
+          <a href="https://wa.me/94760578645" target="_blank" class="btn-whatsapp"><center>Inquire Now</center></a>
+        </div>
+      </div>
+
+      <!-- Trincomalee -->
+      <div class="card">
+        <img src="img/trinco.jpg" alt="Trincomalee Beach" class="card-img">
+        <div class="card-content">
+          <h3>Trincomalee</h3>
+          <p>Coastal city with pristine beaches, rich marine life, and historic temples. Ideal for diving and whale watching.</p>
+          <ul>
+            <li>Nilaveli & Uppuveli Beaches</li>
+            <li>Fort Frederick</li>
+            <li>Pigeon Island Marine Park</li>
+            <li>Best time: April to October</li>
+            <li>Travel time: 6 hours from Colombo</li>
+          </ul>
+          <p>Nearby Attractions: Hot Springs of Kanniya, Marble Beach</p>
+          <a href="https://wa.me/94760578645" target="_blank" class="btn-whatsapp"><center>Inquire Now</center></a>
+        </div>
+      </div>
+
+      <!-- Sigiriya -->
+      <div class="card">
+        <img src="img/sigiriya.jpg" alt="Sigiriya" class="card-img">
+        <div class="card-content">
+          <h3>Sigiriya</h3>
+          <p>Sigiriya, or the 'Lion Rock', is an ancient fortress and palace built atop a massive rock. A UNESCO World Heritage site.</p>
+          <ul>
+            <li>5th-century rock fortress and palace ruins</li>
+            <li>Iconic frescoes of the ‘Heavenly Maidens’</li>
+            <li>Ancient Mirror Wall with historic graffiti</li>
+            <li>Best time: March to May, September to November</li>
+            <li>Travel time: 4–5 hours from Colombo</li>
+          </ul>
+          <p>Nearby Attractions: Minneriya National Park, Pidurangala Rock</p>
+          <a href="https://wa.me/94760578645" target="_blank" class="btn-whatsapp"><center>Inquire Now</center></a>
+        </div>
+      </div>
+
+      <!-- Dambulla -->
+      <div class="card">
+        <img src="img/dambulla.jpg" alt="Dambulla" class="card-img">
+        <div class="card-content">
+          <h3>Dambulla</h3>
+          <p>A historic town home to Sri Lanka’s largest cave temple complex. A UNESCO spiritual landmark.</p>
+          <ul>
+            <li>Five caves with 150+ Buddha statues</li>
+            <li>Colorful cave paintings over 2,000 years old</li>
+            <li>Golden Temple with a giant Buddha statue</li>
+            <li>Best time: Year-round</li>
+            <li>Travel time: 4 hours from Colombo</li>
+          </ul>
+          <p>Nearby Attractions: Sigiriya Rock Fortress, Pidurangala Rock</p>
+          <a href="https://wa.me/94760578645" target="_blank" class="btn-whatsapp"><center>Inquire Now</center></a>
+        </div>
+      </div>
+
+      <!-- Jaffna -->
+      <div class="card">
+        <img src="img/jaffna.jpg" alt="Jaffna" class="card-img">
+        <div class="card-content">
+          <h3>Jaffna</h3>
+          <p>Cultural heart of Sri Lanka’s Tamil heritage, known for historic temples, colonial sites, and vibrant markets.</p>
+          <ul>
+            <li>Nallur Kandaswamy Temple</li>
+            <li>Tamil cuisine specialties</li>
+            <li>Point Pedro Lighthouse</li>
+            <li>Best time: May to September</li>
+            <li>Travel time: 8 hours from Colombo</li>
+          </ul>
+          <p>Nearby Attractions: Delft Island, Nagadipa Buddhist Temple</p>
+          <a href="https://wa.me/94760578645" target="_blank" class="btn-whatsapp"><center>Inquire Now</center></a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+
+
+<style>
+/* Part 2: Explore Sri Lanka Cards */
+.explore-section {
+  padding: 80px 20px;
+  background: rgba(255,255,255,0.1);
+  backdrop-filter: blur(10px);
+  text-align: center;
+}
+
+.section-title {
+  font-size: 2.8rem;
+  color: #0b7a6f;
+  margin-bottom: 10px;
+  animation: fadeInDown 1s ease forwards;
+}
+
+.section-subtitle {
+  font-size: 1.2rem;
+  color: #333;
+  margin-bottom: 50px;
+  animation: fadeInUp 1s ease forwards;
+}
+
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* 4 cards per row */
+  gap: 30px;
+}
+
+.card {
+  background: rgba(255,255,255,0.2);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+  display: flex;
+  flex-direction: column;
+  animation: fadeInUp 1s ease forwards;
+  height: 100%; /* ensures all cards same height */
+}
+
+.card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 16px 40px rgba(0,0,0,0.3);
+}
+
+.card-img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.card:hover .card-img {
+  transform: scale(1.1);
+}
+
+.card-content {
+  padding: 20px;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1; /* makes content grow to fill space */
+}
+
+.card-content h3 {
+  margin-top: 0;
+  color: #0b7a6f;
+  font-size: 1.8rem;
+}
+
+.card-content p {
+  font-size: 0.95rem;
+  color: #333;
+  margin: 10px 0;
+}
+
+.card-content ul {
+  padding-left: 20px;
+  font-size: 0.9rem;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.btn-whatsapp {
+  display: inline-block;
+  background: #25D366;
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 50px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  margin-top: auto; /* pushes button to bottom of card */
+}
+
+.btn-whatsapp:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+}
+
+/* Animations */
+@keyframes fadeInUp {
+  0% {opacity: 0; transform: translateY(30px);}
+  100% {opacity: 1; transform: translateY(0);}
+}
+
+@keyframes fadeInDown {
+  0% {opacity: 0; transform: translateY(-30px);}
+  100% {opacity: 1; transform: translateY(0);}
+}
+
+/* Responsive for smaller screens */
+@media (max-width: 1200px) {
+  .cards-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 900px) {
+  .cards-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .cards-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+</style>
+
+
+<!-- Part 2 End -->
+
+
+<!-- Start Part 3 -->
+<!-- Part 6: Share Your Story -->
+<section class="share-story" id="share-story">
+  <div class="container share-container">
+    <!-- Section Header -->
+    <div class="share-header">
+      <h2>Share Your Story, Inspire Future Journeys</h2>
+      <p>Your stories guide fellow travelers – share your Sri Lankan adventure and inspire the next journey.</p>
+    </div>
+
+    <!-- Banner + CTA -->
+    <div class="share-banner">
+      <img src="img/tripadvisor-banner.jpg" alt="TripAdvisor Banner">
+      <div class="share-cta">
+        <h3>Write a Review</h3>
+        <p>Your review isn’t just feedback – it’s a guide for future travelers.</p>
+        <a href="#contact" class="review-btn">Write a Review</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<style>
+  /* Part 6: Share Your Story – Bigger Panel */
+  .share-story {
+    padding: 100px 20px; /* increased top/bottom padding */
+    background: #f0f9ff; /* light blue background */
+  }
+
+  .share-container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .share-header {
+    text-align: center;
+    margin-bottom: 60px; /* increased spacing */
+  }
+  .share-header h2 {
+    font-size: 42px; /* bigger title */
+    color: #0b7a6f;
+    margin-bottom: 20px;
+    font-weight: 800;
+  }
+  .share-header p {
+    font-size: 20px; /* slightly bigger */
+    color: #555;
+  }
+
+  /* Banner and CTA */
+  .share-banner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 32px; /* more gap */
+    background: #fff;
+    border-radius: 20px;
+    box-shadow: 0 12px 30px rgba(0,0,0,0.15); /* stronger shadow */
+    padding: 32px; /* more padding */
+  }
+
+  .share-banner img {
+    flex: 1 1 300px; /* bigger image panel */
+    border-radius: 16px;
+    max-width: 100%;
+    height: 250px; /* increased height */
+    object-fit: cover;
+  }
+
+  .share-cta {
+    flex: 2 1 500px; /* wider CTA panel */
+  }
+  .share-cta h3 {
+    font-size: 28px; /* bigger */
+    color: #0b7a6f;
+    margin-bottom: 16px;
+    font-weight: 700;
+  }
+  .share-cta p {
+    font-size: 18px; /* bigger text */
+    color: #555;
+    margin-bottom: 20px;
+  }
+
+  .review-btn {
+    display: inline-block;
+    padding: 14px 32px; /* bigger button */
+    border-radius: 28px;
+    background: gold;
+    color: #000;
+    font-weight: 700;
+    text-decoration: none;
+    transition: transform 0.2s, background 0.2s;
+  }
+  .review-btn:hover {
+    transform: scale(1.05);
+    background: #ffc200;
+  }
+
+  /* Responsive */
+  @media (max-width: 900px) {
+    .share-banner {
+      flex-direction: column;
+    }
+    .share-banner img {
+      height: 220px; /* slightly smaller on mobile */
+    }
+  }
+</style>
+
+
+<!-- End Part 3 -->
+
+
+
+<!-- Start Part 4 -->
+<!-- Part 7: Footer -->
+<footer class="site-footer">
+  <div class="container footer-container">
+    <!-- Logo & About -->
+    <div class="footer-about">
+      <div class="footer-logo">
+        <img src="img/logo.png" alt="Island Trails Logo" style="width:50px; height:50px; border-radius:12px; object-fit:cover;">
+        <span>Island Trails</span>
+      </div>
+      <p>Explore Sri Lanka’s iconic treasures and hidden gems with custom tours, guided trips, and unforgettable experiences.</p>
+    </div>
+
+    <!-- Footer Links -->
+    <div class="footer-links">
+      <h4>Quick Links</h4>
+      <ul>
+        <li><a href="Home.html">Home</a></li>
+        <li><a href="Destinations.html">Destinations</a></li>
+        <li><a href="Tours.html">Tour Packages</a></li>
+        <li><a href="CustomTours.html">Custom Tours</a></li>
+        <li><a href="Contact.html">Contact</a></li>
+      </ul>
+    </div>
+
+    <!-- Contact Info -->
+    <div class="footer-contact">
+      <h4>Contact Us</h4>
+      <p>Email: info@islandtrails.com</p>
+      <p>Phone: +94 77 123 4567</p>
+      <div class="social-icons">
+        <a href="#"><img src="img/facebook.png" alt="Facebook"></a>
+        <a href="#"><img src="img/instagram.png" alt="Instagram"></a>
+        <a href="#"><img src="img/twitter.png" alt="Twitter"></a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Copyright -->
+  <div class="footer-bottom">
+    <p>&copy; 2025 Island Trails. All rights reserved.</p>
+  </div>
+</footer>
+
+
+
+<style>
+  /* Part 7: Footer */
+  .site-footer {
+    background: #0b7a6f;
+    color: #fff;
+    padding: 60px 20px 30px;
+  }
+
+  .footer-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 40px;
+    justify-content: space-between;
+  }
+
+  /* Logo & About */
+  .footer-about .footer-logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-weight: 800;
+    font-size: 28px;
+    margin-bottom: 12px;
+  }
+  .footer-about .footer-logo .icon {
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(135deg, #ff9f1c, #ffc200);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    color: #fff;
+    font-size: 24px;
+    font-weight: 900;
+  }
+  .footer-about p {
+    max-width: 300px;
+    font-size: 16px;
+    line-height: 1.6;
+    color: #e0e0e0;
+  }
+
+  /* Footer Links */
+  .footer-links h4 {
+    font-size: 20px;
+    margin-bottom: 12px;
+    font-weight: 700;
+  }
+  .footer-links ul {
+    list-style: none;
+    padding: 0;
+  }
+  .footer-links ul li {
+    margin-bottom: 8px;
+  }
+  .footer-links ul li a {
+    text-decoration: none;
+    color: #fff;
+    transition: color 0.2s;
+  }
+  .footer-links ul li a:hover {
+    color: #ffc200;
+  }
+
+  /* Contact Info */
+  .footer-contact h4 {
+    font-size: 20px;
+    margin-bottom: 12px;
+    font-weight: 700;
+  }
+  .footer-contact p {
+    font-size: 16px;
+    margin-bottom: 8px;
+  }
+  .social-icons {
+    display: flex;
+    gap: 12px;
+    margin-top: 8px;
+  }
+  .social-icons a img {
+    width: 28px;
+    height: 28px;
+    transition: transform 0.2s;
+  }
+  .social-icons a img:hover {
+    transform: scale(1.1);
+  }
+
+  /* Footer Bottom */
+  .footer-bottom {
+    margin-top: 40px;
+    text-align: center;
+    font-size: 14px;
+    color: #e0e0e0;
+  }
+
+  /* Responsive */
+  @media (max-width: 900px) {
+    .footer-container {
+      flex-direction: column;
+      gap: 30px;
+      text-align: center;
+    }
+    .footer-about p {
+      margin: 0 auto;
+    }
+  }
+</style>
+
+
+<!-- End Part 4 -->
+
+
+</body>
+</html>

@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contact Us — Ceylon Bird Tours</title>
+<style>
+  :root {
+    --accent: #0b7a6f;
+    --bg-dark: #1a1f2b;
+    --bg-card: rgba(255, 255, 255, 0.1);
+    --text-light: #f0f0f0;
+    --gold: #ffc200;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg-dark);
+    color: var(--text-light);
+  }
+
+  /* HEADER */
+  header{
+    background: rgba(0,0,0,0.3);
+    backdrop-filter: blur(6px);
+    color:#fff;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    padding: 8px 0;
+  }
+  .container.nav{max-width:1200px;margin:0 auto;padding:0 20px;display:flex;align-items:center;justify-content:space-between;}
+  .logo{display:flex;align-items:center;gap:12px;}
+  .logo-img{width:70px;height:70px;border-radius:50%;object-fit:cover;}
+  .logo-text{font-size:28px;font-weight:800;color:#fff;text-shadow:1px 1px 5px rgba(0,0,0,0.4);}
+  nav ul{display:flex;gap:25px;list-style:none;}
+  nav ul li a{text-decoration:none;color:#fff;font-weight:700;padding:5px 0;position:relative;transition:0.3s;}
+  nav ul li a:hover, nav ul li a.active{color:var(--gold);}
+  nav ul li a::after{content:"";display:block;width:0;height:2px;background:var(--gold);transition:width 0.3s;position:absolute;bottom:-3px;left:0;}
+  nav ul li a:hover::after, nav ul li a.active::after{width:100%;}
+  .cta{padding:8px 20px;background:var(--gold);color:#000;border-radius:25px;text-decoration:none;font-weight:600;transition:0.3s;}
+  .cta:hover{background:#ffc107;color:#000;}
+  @media(max-width:900px){.container.nav{flex-direction:column;gap:15px;} nav ul{flex-wrap:wrap;justify-content:center;gap:15px;}}
+
+  /* CONTACT SECTION */
+  .contact-section {
+    padding: 100px 20px;
+    background: linear-gradient(180deg, #121622, #1a1f2b);
+    text-align: center;
+  }
+  .contact-section h2 {
+    font-size: 42px;
+    color: var(--accent);
+    margin-bottom: 16px;
+    font-weight: 800;
+  }
+  .contact-section p {
+    font-size: 18px;
+    color: #ccc;
+    margin-bottom: 50px;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.6;
+  }
+
+  /* Info Cards */
+  .contact-info-cards {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    justify-content: center;
+    margin-bottom: 60px;
+  }
+  .contact-card {
+    flex: 1 1 280px;
+    background: var(--bg-card);
+    backdrop-filter: blur(8px);
+    border-radius: 20px;
+    padding: 30px 20px;
+    box-shadow: 0 12px 30px rgba(0,0,0,0.4);
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+  .contact-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+  }
+  .contact-card h3 {
+    font-size: 22px;
+    color: var(--gold);
+    margin-bottom: 12px;
+  }
+  .contact-card p {
+    font-size: 16px;
+    color: #eee;
+  }
+
+  /* Highlights / Features */
+  .contact-highlights {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .highlight-card {
+    background: var(--bg-card);
+    backdrop-filter: blur(8px);
+    border-radius: 20px;
+    padding: 25px 20px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.35);
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+  .highlight-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 18px 40px rgba(0,0,0,0.45);
+  }
+  .highlight-card h4 {
+    font-size: 20px;
+    color: var(--accent);
+    margin-bottom: 10px;
+    font-weight: 700;
+  }
+  .highlight-card p {
+    font-size: 16px;
+    color: #eee;
+    line-height: 1.5;
+  }
+
+  /* FOOTER */
+  footer {
+    background: var(--accent);
+    color: #fff;
+    padding: 60px 20px 30px;
+  }
+  .footer-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 40px;
+    justify-content: space-between;
+  }
+  .footer-about .footer-logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-weight: 800;
+    font-size: 28px;
+    margin-bottom: 12px;
+  }
+  .footer-about .footer-logo .icon {
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(135deg, #ff9f1c, #ffc200);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    color: #fff;
+    font-size: 24px;
+    font-weight: 900;
+  }
+  .footer-about p {
+    max-width: 300px;
+    font-size: 16px;
+    line-height: 1.6;
+    color: #e0e0e0;
+  }
+  .footer-links h4, .footer-contact h4 {font-size:20px;margin-bottom:12px;font-weight:700;}
+  .footer-links ul{list-style:none;padding:0;}
+  .footer-links ul li{margin-bottom:8px;}
+  .footer-links ul li a{text-decoration:none;color:#fff;transition:0.2s;}
+  .footer-links ul li a:hover{color: var(--gold);}
+  .footer-contact p{font-size:16px;margin-bottom:8px;}
+  .social-icons{display:flex;gap:12px;margin-top:8px;}
+  .social-icons a img{width:28px;height:28px;transition:0.2s;}
+  .social-icons a img:hover{transform: scale(1.1);}
+  .footer-bottom{text-align:center;margin-top:40px;font-size:14px;color:#e0e0e0;}
+  @media(max-width:900px){.footer-container{flex-direction:column;gap:30px;text-align:center;}}
+
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="container nav">
+    <div class="logo">
+      <img src="img/logo.png" alt="Ceylon Bird Tours Logo" class="logo-img">
+      <div class="logo-text">Ceylon Bird Tours</div>
+    </div>
+    <nav>
+      <ul>
+        <li><a href="Home.html">Home</a></li>
+        <li><a href="Destinations.html">Destinations</a></li>
+        <li><a href="Tours.html">Tour Packages</a></li>
+        <li><a href="CustomTours.html">Custom Tours</a></li>
+        <li><a href="contact.html" class="active">Contact</a></li>
+      </ul>
+    </nav>
+    <a class="cta" href="contact.html">Book Now</a>
+  </div>
+</header>
+
+<!-- CONTACT SECTION -->
+<section class="contact-section">
+  <div class="contact-container">
+    <h2>Get in Touch</h2>
+    <p>Whether you’re curious about our tours, seeking assistance with your travel plans, or looking for a customized journey, our team is here to assist you.</p>
+
+    <div class="contact-info-cards">
+      <div class="contact-card">
+        <h3>Our Address</h3>
+        <p>78/B, Jayanathi Mawatha, Anuradhapura</p>
+      </div>
+      <div class="contact-card">
+        <h3>Phone Number</h3>
+        <p>+94 72 599 6468</p>
+      </div>
+      <div class="contact-card">
+        <h3>Email</h3>
+        <p>info@ceylonbirdtours.com</p>
+      </div>
+    </div>
+
+    <div class="contact-highlights">
+      <div class="highlight-card">
+        <h4>Flexible Durations</h4>
+        <p>Pick the trip length that suits you, from a short getaway to an extended adventure.</p>
+      </div>
+      <div class="highlight-card">
+        <h4>Personalized Routes</h4>
+        <p>Explore the destinations you love most, anywhere across Sri Lanka.</p>
+      </div>
+      <div class="highlight-card">
+        <h4>Travel Your Way</h4>
+        <p>Whether solo, as a couple, with family, or with friends, we’ve got you covered.</p>
+      </div>
+      <div class="highlight-card">
+        <h4>Set the Pace</h4>
+        <p>Choose a relaxed journey or an action-filled itinerary — it’s all up to you.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<!-- FOOTER -->
+<footer class="site-footer">
+  <div class="footer-container">
+    <div class="footer-about">
+      <div class="footer-logo">
+        <img src="img/logo.png" alt="Ceylon Bird Tours Logo" style="width:50px;height:50px;border-radius:12px;object-fit:cover;">
+        <span>Ceylon Bird Tours</span>
+      </div>
+      <p>Explore Sri Lanka’s iconic treasures and hidden gems with custom tours, guided trips, and unforgettable experiences.</p>
+    </div>
+
+    <div class="footer-links">
+      <h4>Quick Links</h4>
+      <ul>
+        <li><a href="Home.html">Home</a></li>
+        <li><a href="Destinations.html">Destinations</a></li>
+        <li><a href="Tours.html">Tour Packages</a></li>
+        <li><a href="CustomTours.html">Custom Tours</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-contact">
+      <h4>Contact Us</h4>
+      <p>Email: info@ceylonbirdtours.com</p>
+      <p>Phone: +94 72 599 6468</p>
+      <div class="social-icons">
+        <a href="#"><img src="img/facebook.png" alt="Facebook"></a>
+        <a href="#"><img src="img/instagram.png" alt="Instagram"></a>
+        <a href="#"><img src="img/twitter.png" alt="Twitter"></a>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>&copy; 2025 Ceylon Bird Tours. All rights reserved.</p>
+  </div>
+</footer>
+
+
+</body>
+</html>

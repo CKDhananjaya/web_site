@@ -1,0 +1,664 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Custom Tours – Island Trails</title>
+ <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --accent:#0b7a6f;
+      --bg:#f7faf9;
+      --gold:#ffc200;
+    }
+
+    *{box-sizing:border-box;margin:0;padding:0}
+    html {scroll-behavior: smooth;}
+    body{
+      font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background:var(--bg);
+      color:#0f172a;
+    }
+
+    /* HEADER */
+    header {
+      width: 100%;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 1000;
+      backdrop-filter: blur(10px);
+      background: rgba(255, 255, 255, 0.9); /* header background added */
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+      font-family: 'Poppins', sans-serif;
+      padding: 10px 0;
+    }
+    .container.nav {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .logo-img {
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+    .logo-text {
+      font-size: 28px;
+      font-weight: 800;
+      color: #0b7a6f;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+    }
+    nav ul {
+      display: flex;
+      list-style: none;
+      gap: 25px;
+    }
+    nav ul li a {
+      color: #0b7a6f;
+      text-decoration: none;
+      font-weight: 700;
+      padding: 5px 0;
+      position: relative;
+      transition: 0.3s;
+    }
+    nav ul li a:hover,
+    nav ul li a.active {
+      color: var(--gold);
+    }
+    nav ul li a::after {
+      content: "";
+      display: block;
+      width: 0;
+      height: 2px;
+      background: var(--gold);
+      transition: width 0.3s ease;
+      position: absolute;
+      bottom: -3px;
+      left: 0;
+    }
+    nav ul li a:hover::after,
+    nav ul li a.active::after {
+      width: 100%;
+    }
+    .cta {
+      padding: 8px 20px;
+      background: var(--gold);
+      color: #000;
+      border-radius: 25px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: 0.3s;
+    }
+    .cta:hover {
+      background: #ffd54a;
+    }
+
+    /* HERO (SLIDER) */
+    .home-hero {
+      position: relative;
+      height: 90vh; /* increased height */
+      margin-top: 100px;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      opacity: 0;
+      transition: opacity 1s ease-in-out;
+    }
+    .home-hero.active {
+      opacity: 1;
+    }
+    .home-hero::after {
+      content:"";
+      position:absolute;
+      inset:0;
+      background:rgba(0,0,0,0.45);
+    }
+    .home-content {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: #fff;
+      z-index: 2;
+      text-align: center;
+    }
+    .home-title {
+      font-size: 58px;
+      font-weight: 800;
+      line-height: 1.1;
+      margin-bottom: 18px;
+      animation: slideUp 1s ease forwards;
+      opacity: 0;
+    }
+    .home-sub {
+      font-size: 18px;
+      max-width: 600px; /* wider container */
+      color: #e0e0e0;
+      animation: fadeIn 1.2s ease forwards;
+      opacity: 0;
+      margin: 0 auto;
+    }
+
+    /* Animations */
+    @keyframes slideUp {
+      from {opacity:0; transform:translateY(24px);}
+      to {opacity:1; transform:translateY(0);}
+    }
+    @keyframes fadeIn {
+      from {opacity:0;}
+      to {opacity:1;}
+    }
+
+    /* CUSTOM TOUR SECTION */
+    .custom-tour-section {
+      padding:100px 20px;
+      max-width:1200px;
+      margin:0 auto;
+    }
+    .cts-title {
+      font-size:38px;
+      font-weight:800;
+      color:var(--accent);
+      text-align:center;
+      margin-bottom:40px;
+    }
+
+    /* Steps */
+    .cts-steps {
+      display:flex;
+      gap:30px;
+      justify-content:center;
+      flex-wrap:wrap;
+      margin-bottom:70px;
+    }
+    .step-card {
+      background: rgba(255,255,255,0.55);
+      backdrop-filter: blur(10px);
+      padding:25px;
+      width:300px;
+      text-align:center;
+      border-radius:18px;
+      box-shadow:0 8px 20px rgba(0,0,0,0.15);
+      transition:0.3s;
+    }
+    .step-card:hover {
+      transform:translateY(-6px);
+      box-shadow:0 14px 30px rgba(0,0,0,0.25);
+    }
+    .step-number {
+      width:55px;
+      height:55px;
+      border-radius:50%;
+      background:var(--accent);
+      color:#fff;
+      font-size:26px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      margin:0 auto 14px;
+      font-weight:700;
+    }
+    .step-card h3 {
+      font-size:22px;
+      margin-bottom:10px;
+      font-weight:700;
+    }
+    .step-card p {
+      font-size:16px;
+      color:#333;
+    }
+
+    /* Message */
+    .cts-message {
+      text-align:center;
+      margin-bottom:80px;
+    }
+    .cts-message h2 {
+      font-size:32px;
+      font-weight:800;
+      color:var(--accent);
+      margin-bottom:14px;
+    }
+    .cts-message p {
+      font-size:18px;
+      color:#444;
+      margin-bottom:30px;
+    }
+    .contact-info-box p {
+      font-size:20px;
+      font-weight:700;
+      color:var(--accent);
+      margin:6px 0;
+    }
+
+    /* Features */
+    .cts-features {
+      display:grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap:25px;
+    }
+    .feature-card {
+      background:#fff;
+      padding:22px;
+      border-radius:16px;
+      box-shadow:0 8px 20px rgba(0,0,0,0.12);
+      transition:0.3s;
+    }
+    .feature-card:hover {
+      transform:translateY(-6px);
+      box-shadow:0 14px 30px rgba(0,0,0,0.22);
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- Header -->
+<header>
+  <div class="container nav">
+    <div class="logo">
+      <img src="img/logo.png" alt="Island Trails Logo" class="logo-img">
+      <div class="logo-text">Island Trails</div>
+    </div>
+
+    <nav>
+      <ul>
+        <li><a href="Home.html">Home</a></li>
+        <li><a href="Destinations.html">Destinations</a></li>
+        <li><a href="Tours.html">Tour Packages</a></li>
+        <li><a href="CustomTours.html" class="active">Custom Tours</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </nav>
+
+    <a class="cta" href="contact.html">Book Now</a>
+  </div>
+</header>
+
+<!-- HERO WITH SLIDER -->
+<section class="home-hero" id="homeSlider">
+  <div class="home-content">
+    <h1 class="home-title">Craft Your Own Journey</h1>
+    <p class="home-sub">Design a custom travel experience perfectly shaped around your interests.</p>
+  </div>
+</section>
+
+<!-- CUSTOM TOUR MAIN SECTION -->
+<section class="custom-tour-section">
+  <h2 class="cts-title">How We Create Your Perfect Tour</h2>
+
+  <div class="cts-steps">
+    <div class="step-card">
+      <div class="step-number">1</div>
+      <h3>Contact Us</h3>
+      <p>Reach out via phone or email to discuss your travel dreams.</p>
+    </div>
+
+    <div class="step-card">
+      <div class="step-number">2</div>
+      <h3>Plan Together</h3>
+      <p>We help you create a trip that fits your preferences.</p>
+    </div>
+
+    <div class="step-card">
+      <div class="step-number">3</div>
+      <h3>Enjoy Your Journey</h3>
+      <p>Your unforgettable adventure begins with Island Trails.</p>
+    </div>
+  </div>
+
+  <div class="cts-message">
+    <h2>Make Your Travel Dreams Come True</h2>
+    <p>Work with our travel team to plan a journey designed around your interests.</p>
+
+    <div class="contact-info-box">
+      <p>📞 +94 72 599 6468</p>
+      <p>📧 info@ceylonbirdtours.com</p>
+    </div>
+  </div>
+
+  <h2 class="cts-title">Tailor Your Sri Lankan Journey</h2>
+
+  <div class="cts-features">
+    <div class="feature-card">
+      <h4>Flexible Durations</h4>
+      <p>Pick the trip length that suits you, from a short getaway to an extended adventure.</p>
+    </div>
+
+    <div class="feature-card">
+      <h4>Personalized Routes</h4>
+      <p>Explore destinations you love most, anywhere across Sri Lanka.</p>
+    </div>
+
+    <div class="feature-card">
+      <h4>Travel Your Way</h4>
+      <p>Solo, couple, family, or friends — we’ve got you covered.</p>
+    </div>
+
+    <div class="feature-card">
+      <h4>Set the Pace</h4>
+      <p>Relaxed travels or adventure-filled itineraries — it’s up to you.</p>
+    </div>
+  </div>
+</section>
+
+<!-- SLIDER SCRIPT -->
+<script>
+  const homeImages = ['img/slider1.jpg','img/slider2.jpg','img/slider3.jpg'];
+  homeImages.forEach(src=>new Image().src); // preload
+
+  let homeIndex = 0;
+  const homeSlider = document.getElementById('homeSlider');
+
+  function updateHomeSlider() {
+    homeSlider.classList.remove('active');
+
+    setTimeout(() => {
+      homeSlider.style.backgroundImage = `url(${homeImages[homeIndex]})`;
+      homeSlider.classList.add('active');
+      homeIndex = (homeIndex + 1) % homeImages.length;
+    }, 500);
+  }
+
+  homeSlider.style.backgroundImage = `url(${homeImages[0]})`;
+  homeSlider.classList.add('active');
+  homeIndex = 1;
+
+  setInterval(updateHomeSlider, 3000);
+</script>
+
+
+
+<!-- Part 2 End -->
+
+
+<!-- Start Part 3 -->
+<!-- Part 6: Share Your Story -->
+<section class="share-story" id="share-story">
+  <div class="container share-container">
+    <!-- Section Header -->
+    <div class="share-header">
+      <h2>Share Your Story, Inspire Future Journeys</h2>
+      <p>Your stories guide fellow travelers – share your Sri Lankan adventure and inspire the next journey.</p>
+    </div>
+
+    <!-- Banner + CTA -->
+    <div class="share-banner">
+      <img src="img/tripadvisor-banner.jpg" alt="TripAdvisor Banner">
+      <div class="share-cta">
+        <h3>Write a Review</h3>
+        <p>Your review isn’t just feedback – it’s a guide for future travelers.</p>
+        <a href="#contact" class="review-btn">Write a Review</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<style>
+  /* Part 6: Share Your Story – Bigger Panel */
+  .share-story {
+    padding: 100px 20px; /* increased top/bottom padding */
+    background: #f0f9ff; /* light blue background */
+  }
+
+  .share-container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .share-header {
+    text-align: center;
+    margin-bottom: 60px; /* increased spacing */
+  }
+  .share-header h2 {
+    font-size: 42px; /* bigger title */
+    color: #0b7a6f;
+    margin-bottom: 20px;
+    font-weight: 800;
+  }
+  .share-header p {
+    font-size: 20px; /* slightly bigger */
+    color: #555;
+  }
+
+  /* Banner and CTA */
+  .share-banner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 32px; /* more gap */
+    background: #fff;
+    border-radius: 20px;
+    box-shadow: 0 12px 30px rgba(0,0,0,0.15); /* stronger shadow */
+    padding: 32px; /* more padding */
+  }
+
+  .share-banner img {
+    flex: 1 1 300px; /* bigger image panel */
+    border-radius: 16px;
+    max-width: 100%;
+    height: 250px; /* increased height */
+    object-fit: cover;
+  }
+
+  .share-cta {
+    flex: 2 1 500px; /* wider CTA panel */
+  }
+  .share-cta h3 {
+    font-size: 28px; /* bigger */
+    color: #0b7a6f;
+    margin-bottom: 16px;
+    font-weight: 700;
+  }
+  .share-cta p {
+    font-size: 18px; /* bigger text */
+    color: #555;
+    margin-bottom: 20px;
+  }
+
+  .review-btn {
+    display: inline-block;
+    padding: 14px 32px; /* bigger button */
+    border-radius: 28px;
+    background: gold;
+    color: #000;
+    font-weight: 700;
+    text-decoration: none;
+    transition: transform 0.2s, background 0.2s;
+  }
+  .review-btn:hover {
+    transform: scale(1.05);
+    background: #ffc200;
+  }
+
+  /* Responsive */
+  @media (max-width: 900px) {
+    .share-banner {
+      flex-direction: column;
+    }
+    .share-banner img {
+      height: 220px; /* slightly smaller on mobile */
+    }
+  }
+</style>
+
+
+<!-- End Part 3 -->
+
+
+
+<!-- Start Part 4 -->
+<!-- Part 7: Footer -->
+<footer class="site-footer">
+  <div class="container footer-container">
+    <!-- Logo & About -->
+    <div class="footer-about">
+      <div class="footer-logo">
+        <img src="img/logo.png" alt="Island Trails Logo" style="width:50px; height:50px; border-radius:12px; object-fit:cover;">
+        <span>Island Trails</span>
+      </div>
+      <p>Explore Sri Lanka’s iconic treasures and hidden gems with custom tours, guided trips, and unforgettable experiences.</p>
+    </div>
+
+    <!-- Footer Links -->
+    <div class="footer-links">
+      <h4>Quick Links</h4>
+      <ul>
+        <li><a href="Home.html">Home</a></li>
+        <li><a href="Destinations.html">Destinations</a></li>
+        <li><a href="Tours.html">Tour Packages</a></li>
+        <li><a href="CustomTours.html">Custom Tours</a></li>
+        <li><a href="Contact.html">Contact</a></li>
+      </ul>
+    </div>
+
+    <!-- Contact Info -->
+    <div class="footer-contact">
+      <h4>Contact Us</h4>
+      <p>Email: info@islandtrails.com</p>
+      <p>Phone: +94 77 123 4567</p>
+      <div class="social-icons">
+        <a href="#"><img src="img/facebook.png" alt="Facebook"></a>
+        <a href="#"><img src="img/instagram.png" alt="Instagram"></a>
+        <a href="#"><img src="img/twitter.png" alt="Twitter"></a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Copyright -->
+  <div class="footer-bottom">
+    <p>&copy; 2025 Island Trails. All rights reserved.</p>
+  </div>
+</footer>
+
+
+
+<style>
+  /* Part 7: Footer */
+  .site-footer {
+    background: #0b7a6f;
+    color: #fff;
+    padding: 60px 20px 30px;
+  }
+
+  .footer-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 40px;
+    justify-content: space-between;
+  }
+
+  /* Logo & About */
+  .footer-about .footer-logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-weight: 800;
+    font-size: 28px;
+    margin-bottom: 12px;
+  }
+  .footer-about .footer-logo .icon {
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(135deg, #ff9f1c, #ffc200);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    color: #fff;
+    font-size: 24px;
+    font-weight: 900;
+  }
+  .footer-about p {
+    max-width: 300px;
+    font-size: 16px;
+    line-height: 1.6;
+    color: #e0e0e0;
+  }
+
+  /* Footer Links */
+  .footer-links h4 {
+    font-size: 20px;
+    margin-bottom: 12px;
+    font-weight: 700;
+  }
+  .footer-links ul {
+    list-style: none;
+    padding: 0;
+  }
+  .footer-links ul li {
+    margin-bottom: 8px;
+  }
+  .footer-links ul li a {
+    text-decoration: none;
+    color: #fff;
+    transition: color 0.2s;
+  }
+  .footer-links ul li a:hover {
+    color: #ffc200;
+  }
+
+  /* Contact Info */
+  .footer-contact h4 {
+    font-size: 20px;
+    margin-bottom: 12px;
+    font-weight: 700;
+  }
+  .footer-contact p {
+    font-size: 16px;
+    margin-bottom: 8px;
+  }
+  .social-icons {
+    display: flex;
+    gap: 12px;
+    margin-top: 8px;
+  }
+  .social-icons a img {
+    width: 28px;
+    height: 28px;
+    transition: transform 0.2s;
+  }
+  .social-icons a img:hover {
+    transform: scale(1.1);
+  }
+
+  /* Footer Bottom */
+  .footer-bottom {
+    margin-top: 40px;
+    text-align: center;
+    font-size: 14px;
+    color: #e0e0e0;
+  }
+
+  /* Responsive */
+  @media (max-width: 900px) {
+    .footer-container {
+      flex-direction: column;
+      gap: 30px;
+      text-align: center;
+    }
+    .footer-about p {
+      margin: 0 auto;
+    }
+  }
+</style>
+
+
+<!-- End Part 4 -->
+
+</body>
+</html>
